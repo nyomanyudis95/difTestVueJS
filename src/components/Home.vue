@@ -225,8 +225,10 @@
                     const index = this.usersData.findIndex(x => x.id === id);
                     this.usersData.splice(index,1);
                     this.countUsers--;
-                    this.setPages();
-                    this.getDataPagination(this.page);
+                    this.page = 1;
+                    this.getDataPagination(this.page).then(() => {
+                        this.setPages();
+                    });
                 });
                 // console.log('delete id = ',id);
                 // const index = this.usersData.findIndex(x => x.id === id);
@@ -235,9 +237,11 @@
             onEnter(){
                 console.log('onEnter');
                 this.setPages();
+                this.page = 1;
                 this.getDataPagination (this.page);
             },
             enterInputLike(){
+                this.page = 1;
                 this.getDataPagination(this.page).then(() => {
                     if(this.inputLike == ''){
                         this.init();
@@ -263,7 +267,7 @@
                 this.page = pageNumber
                 console.log('getDataPagination this.page = ',this.page);
                 console.log('getDataPagination this.perPage = ',this.perPage);
-                const actualPage = (this.page-1) * this.perPage;
+                const actualPage = (this.page-1) ;
                 console.log('getDataPagination actualPage = ',actualPage);
                  await axios
                 .get('http://localhost:3000/api/v1/users/?page='+actualPage+"&limit="+this.perPage+"&like="+this.inputLike)
